@@ -1,0 +1,45 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Garante que a barra fique acima de outros elementos */
+}
+
+.titulo {
+    font-size: 25px;
+}
+
+.titulo2 {
+    font-size: 15px;
+}
+.titulo3 {
+    font-size: 20px;
+
+
+}
+.nometarefa {
+    background: #bbc7ce;
+    font-size: 18px;
+}
+
+.botaoretorno {
+    border: 50px;
+    background: #FAB12F;
+}
+
+.card-text {
+    font-size: 16px;
+}
+
+
+.card-body{
+    height: 130px;
+}
+
+.cont-inde {
+    background-color:#e1e1e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens horizontalmente */
+    border-radius: 20px;
+}

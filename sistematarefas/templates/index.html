@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="titulo mx-4">Uma ferramenta simples e prática para o seu planejamento.</h1>
+<h4 class="titulo2 mx-4">Visualize suas tarefas em ordem de prioridade e não perca nenhum prazo.</h3>
+    <hr>
+    <div class="cont-inde mt-3 mx-5">
+        {%for tarefa in tarefas%}
+            <div class="card border-dark m-3 w-75">
+                <div class="card-header nometarefa" {% if tarefa.custo >= 1000 %} style="background: #f3e7af;"{% endif %}>
+                    <h3>{{ tarefa.nome_tarefa.capitalize() }}</h3>
+            </div>
+            <div class="card-body p-4 m-50" {% if tarefa.custo >= 1000 %} style="background: #f3e7af;"{% endif %}>
+                 <h6 class="card-text">Custo: {{ "{:,.2f}".format(tarefa.custo) | replace(",", ".") }}</h6>
+                 <p class="card-text">Data limite: {{ tarefa.data_limite.strftime('%d/%m/%Y') }}</p>
+                 <div class="d-flex justify-content-end " >
+                   <button type="button" class="btn btn-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#excluirTarefa{{ tarefa.id }}">Excluir  <i class="fa-solid fa-trash-can"></i></button>
+                   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ tarefa.id }}">Editar  <i class="fa-solid fa-pen-to-square"></i></button>
+                </div>
+            </div>
+          </div>
+          <div class="modal fade" id="excluirTarefa{{ tarefa.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Excluir Tarefa</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Você quer realmente excluir essa tarefa? (Essa ação não poderá ser desfeita)
+                </div>
+                <div class="modal-footer d-flex justify-content-end">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Não</button>
+                  <form method="POST" action="{{ url_for('excluirTarefa', id=tarefa.id) }}" ><button type="submit" class="btn btn-outline-danger">Sim</button></form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="editModal{{ tarefa.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Tarefa</h5>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulário de Edição -->
+                        <form action="{{ url_for('editar', id=tarefa.id) }}" method="POST">
+
+                            <div class="form-group">
+                                <label for="nome">Nome:</label>
+                                <input type="text" name="nome" id="nome" class="form-control" 
+                                       value="{{ tarefa.nome_tarefa }}" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="custo">Custo:</label>
+                                <input type="number" name="custo" id="custo" class="form-control" 
+                                       value="{{ tarefa.custo }}" required>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="data">Data Limite:</label>
+                              <input type="date" name="data" id="data" class="form-control" 
+                                     value="{{ tarefa.data_limite.strftime('%Y-%m-%d') }}" required>
+                            </div>
+
+                            <div class="modal-footer d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-outline-primary">Salvar Alterações</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+        {% endfor %}
+    </div>   
+    <div container m-5 p-3>   
+      <a href="/tarefas" class="btn btn-success m-5">Incluir Nova Tarefa</a>
+    </div>
+{% endblock %}
+
+
